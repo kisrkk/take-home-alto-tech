@@ -1,0 +1,9 @@
+device: 
+  hostname: 'localhost'
+  port: 21000
+mqtt:
+  hostname: 'localhost'
+  port: 21883
+  username: 'testuser'
+  password: 'testpassword'
+  certificate: 'somewhere'
