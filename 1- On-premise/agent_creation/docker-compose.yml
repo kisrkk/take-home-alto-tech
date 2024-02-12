@@ -1,0 +1,8 @@
+version: '3'
+services:
+  app:
+    container_name: alto-test-device
+    restart: always
+    build: .
+    ports:
+      - '21000:21000' 

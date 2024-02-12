@@ -8,7 +8,6 @@ const moment = require("moment-timezone");
 var cors = require("cors");
 let csv_data = null;
 let csv_data_count = null;
-
 let count = 0;
 
 function loadCSVIntoObject(filePath) {

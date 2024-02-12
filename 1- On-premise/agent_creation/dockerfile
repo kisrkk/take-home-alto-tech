@@ -1,0 +1,27 @@
+# Use the official image as a base
+FROM node:20.9.0-alpine3.17
+
+LABEL description="This dockerfile for install the device_simulator."
+
+# Install Python and other necessary packages
+RUN apk add --no-cache python3 make g++ 
+
+# Set the working directory
+WORKDIR /usr/src/app
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Copy the rest of the app's source code
+COPY . .
+
+# Install dependencies
+RUN npm install --timeout=10000
+#RUN firewall-cmd --permanent --add-port=21000/tcp
+#RUN firewall-cmd --reload
+
+# Expose the required port
+EXPOSE 21000 
+
+# Start nodemon for main.js
+CMD ["npx", "nodemon", "server.js"]
