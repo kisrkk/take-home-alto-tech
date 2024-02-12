@@ -1,10 +1,10 @@
 {
   "name": "device_simulator",
   "version": "1.0.0",
-  "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "start": "node server.js --watch"
   },
   "author": "Kirati",
   "license": "ISC",
@@ -20,5 +20,6 @@
     "moment-timezone": "^0.5.45",
     "mqtt": "^5.3.5",
     "nodemon": "^3.0.3"
-  }
+  },
+  "description": ""
 }
