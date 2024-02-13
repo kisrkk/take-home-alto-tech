@@ -6,4 +6,4 @@ mqtt:
   port: 1883
   username: 'mydevice'
   password: '9123900000'
-  certificate: 'somewhere'
+  certificate: './somewhere'

@@ -1,0 +1,13 @@
+hotel:
+  device_list: ["life_being", "iaq_sensor"]
+mongodb: 
+  hostname: 'localhost'
+  port: 27017
+  dbName: 'alto'
+mqtt:
+  hostname: '167.172.90.42'
+  port: 1883
+  username: 'mydevice'
+  password: '9123900000' 
+server:
+  hostname: 'cloud.dev.co'

@@ -1,0 +1,20 @@
+agent:
+  agent_name: "hotel_1"
+  agent_id: 990000001
+devices_list:
+  - room_name: "101"
+    hostname: "localhost"
+    port: 21000
+    floor: "1"
+    device_id_list: ["life_being", "iaq_sensor"]
+  - room_name: "102"
+    hostname: "localhost"
+    port: 22000
+    floor: "1"
+    device_id_list: ["life_being_102", "iaq_sensor_102"]
+mqtt:
+  hostname: "167.172.90.42"
+  port: 1883
+  username: "mydevice"
+  password: "9123900000"
+  certificate: "./somewhere"
