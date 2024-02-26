@@ -1,5 +1,6 @@
 hotel:
-  device_list: ["life_being", "iaq_sensor"]
+  hotel_name: "hotel_1"
+  device_list: ["101_life_being", "101_iaq_sensor","102_life_being", "102_iaq_sensor"]
 mongodb: 
   hostname: 'localhost'
   port: 27017
@@ -10,4 +11,5 @@ mqtt:
   username: 'mydevice'
   password: '9123900000' 
 server:
-  hostname: 'cloud.dev.co'
+  hostname: 'localhost'
+  port: 8080

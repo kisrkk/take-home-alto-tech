@@ -12,6 +12,7 @@ var cors = require("cors");
 const db = require("./src/database");
 
 const app = express();
+app.use(express.json());
 app.use(cors());
 
 function authFailReturn(res, message) { 
@@ -48,20 +49,20 @@ app.post("/device_data", cors(), extractApiKey, async (req, res) => {
   try {
     const payload = req.body;
     const apiKey = req.apiKey;
+    ///console.log(`/device_data `,req);
     const auth = await authTokenCheck(apiKey);
     if (kDebug) {
-      console.log(`POST `);
-      console.log(query);
+      //console.log(`POST `,payload); 
     }
     if (!auth.auth_acknowledgement) {
       res.status(401).send(auth.message);
     } else {
-      db.insertIntoDB(db.my_connection, db.tb_hotel_info, payload);
+      db.insertIntoDB(db.my_connection, db.tb_device_data, payload);
       res.status(201).send("OK");
     }
   } catch (error) {
     if (kDebug) {
-      res.status(500).send(error.message);
+      res.status(500).send(error);
     } else {
       res.status(500);
     }
@@ -73,6 +74,6 @@ app.use(cors(), (req, res, next) => {
 });
 
 const httpServer = http.createServer(app);
-httpServer.listen(80, () => {
-  console.log(`HTTP server listening on port ${80}`);
+httpServer.listen(8080, () => {
+  console.log(`HTTP server listening on port ${8080}`);
 });

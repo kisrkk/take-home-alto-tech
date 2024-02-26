@@ -7,7 +7,7 @@ const axios = require("axios");
 const server_config = YAML.load(fs.readFileSync("./config.yaml"));
 
 const AGENT_NAME = server_config.agent.agent_name;
-const DEVICES_LIST = server_config.devices_list;  
+const DEVICES_LIST = server_config.devices_list;
 const MQTT_SERVER = server_config.mqtt.hostname;
 const MQTT_PORT = server_config.mqtt.port;
 const MQTT_USER = server_config.mqtt.username;
@@ -30,25 +30,32 @@ mqttClient.on("connect", function () {
 
 async function fetch_data(room_properties) {
   try {
+    //console.log("Fetching data room_properties ", room_properties);
+
     const device_id_list = room_properties.device_id_list;
+
     device_id_list.forEach((device_id) => {
+      console.log("device_id ", device_id);
       axios
-        .get(`http://${room_properties.hostname}:${room_properties.port}/${device_id}`)
-        .then(function (response) {
-          let data = JSON.stringify(response.data);
-          data.hotel_id = server_config.agent.agent_id;
-          data.room_name = room_properties.room_name;
-          data.floor = room_properties.floor; 
-          const topic = `/${AGENT_NAME}/${device_id}`;
+        .get(
+          `http://${room_properties.hostname}:${room_properties.port}/${device_id}`
+        )
+        .then(function (response) { 
+          let _data = response.data;
+          _data.hotel_id = server_config.agent.agent_id;
+          _data.room_name = room_properties.room_name;
+          _data.floor = room_properties.floor;
+          let data = JSON.stringify(_data);
+          const topic = `/${AGENT_NAME}/${room_properties.room_name}_${device_id}`;
           console.log(topic, data);
-          mqttClient.publish(topic, data); 
+          mqttClient.publish(topic, data);
         })
         .catch(function (error) {
-          console.error(error); 
+          console.error(error);
         });
     });
   } catch (error) {
-    console.error(error); 
+    console.error(error);
   }
 }
 

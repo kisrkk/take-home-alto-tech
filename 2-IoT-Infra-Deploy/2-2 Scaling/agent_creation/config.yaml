@@ -11,7 +11,7 @@ devices_list:
     hostname: "localhost"
     port: 22000
     floor: "1"
-    device_id_list: ["life_being_102", "iaq_sensor_102"]
+    device_id_list: ["life_being", "iaq_sensor"]
 mqtt:
   hostname: "167.172.90.42"
   port: 1883

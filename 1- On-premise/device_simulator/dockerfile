@@ -24,4 +24,4 @@ RUN npm install --timeout=10000
 EXPOSE 21000 
 
 # Start nodemon for main.js
-CMD ["npx", "nodemon", "server.js"]
+CMD ["npm", "run", "start"]

@@ -5,4 +5,4 @@ services:
     restart: always
     build: .
     ports:
-      - '21000:21000' 
+      - '22000:22000' 

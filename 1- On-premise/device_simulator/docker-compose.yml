@@ -1,6 +1,6 @@
 version: '3'
 services:
   app:
-    container_name: alto-test-data-logger
+    container_name: alto-test-device-simulator
     restart: always
     build: .

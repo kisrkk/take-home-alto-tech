@@ -4,7 +4,7 @@ FROM node:20.9.0-alpine3.17
 LABEL description="This dockerfile for install the agent_creation."
 
 # Install Python and other necessary packages
-RUN apk add --no-cache python3 make g++ 
+RUN apk add --no-cache python3 make g++ curl
 
 # Set the working directory
 WORKDIR /usr/src/app
@@ -21,7 +21,7 @@ RUN npm install --timeout=10000
 #RUN firewall-cmd --reload
 
 # Expose the required port
-# EXPOSE 21000 
+EXPOSE 22000 
 
 # Start nodemon for main.js
-CMD ["npx", "nodemon", "index.js"]
+CMD ["npm", "run", "start"]

@@ -24,7 +24,7 @@ async function redis_set(key, value, expired = 14400) {
     await redis_client.set(key, JSON.stringify(value));
     await redis_client.EXPIRE(key, expired);
   } catch (err) {
-    console.error("Redis Set data fail:", err.message);
+    console.log("Redis Set data fail:", err.message);
   }
 }
 
@@ -34,7 +34,7 @@ async function redis_get(key) {
       const result = redis_client.get(key);
       resolve(result);
     } catch (err) {
-      console.error("Redis Set data fail:", err.message);
+      console.log("Redis Set data fail:", err.message);
       reject(err);
     }
   });
@@ -54,7 +54,9 @@ var mqttClient = mqtt.connect({
 mqttClient.on("connect", function () {
   console.log("MQTT Connect");
   device_list.forEach((device_id) => {
-    mqttClient.subscribe(`/${hotel_name}/${device_id}`, function (err) {
+    const subscriber_topic = `/${hotel_name}/${device_id}`;
+    console.log(`subscribe on `,subscriber_topic);
+    mqttClient.subscribe(subscriber_topic, function (err) {
       if (err) {
         console.log("Mqtt Connection error:", err);
       }
@@ -112,18 +114,21 @@ async function insertDocument(collectionName, document) {
 const apiKey = 'HASH256+SALT';
 
 async function send_data(data,apiKey) {
-  try {
-    setTimeout(() => {
-      axios.post(server_config.server.hostname, data,{
+  const url = `http://${server_config.server.hostname}:${server_config.server.port}/device_data`
+  console.log(`url `,url);
+  try { 
+     const res =  await axios.post(url, data,{
         headers: { 'Authorization': `Bearer ${apiKey}` }
-      });
-    }, 5000);
+      });  
+      console.log(res);
+   
   } catch (error) {
-    console.error(error.message);
+    //console.log(error.message);
   }
 }
 
 mqttClient.on("message", (topic, message) => {
+  try{ 
   device_list.forEach((device_id) => {
     if (topic == `/${hotel_name}/${device_id}`) {
       const thismessage = Buffer.from(message, "base64").toString("utf-8");
@@ -136,7 +141,7 @@ mqttClient.on("message", (topic, message) => {
         if (last_occupancy != occupancy) {
           redis_set(`${device_id}_last_occupancy_status`, occupancy);
           /* Post To server occupancy was change*/
-          send_data(messageJson);
+          send_data(messageJson,apiKey);
         }
       }else if(presence_state.replace('"', "") == "temperature"){
         const last_temperature = redis_get(`${device_id}_last_temperature_status`);
@@ -144,7 +149,7 @@ mqttClient.on("message", (topic, message) => {
         if (last_temperature != temperature) {
           redis_set(`${device_id}_last_temperature_status`, temperature);
           /* Post To server temperature was change*/
-          send_data(messageJson);
+          send_data(messageJson,apiKey);
         }
       }
       /*
@@ -152,5 +157,8 @@ mqttClient.on("message", (topic, message) => {
       */
       insertDocument(collection_device_sensor_value, messageJson);
     }
-  });
+  });}
+  catch(err){
+    //console.log(err.message);
+  }
 });
